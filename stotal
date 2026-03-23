@@ -1,0 +1,7 @@
+#!/usr/bin/python3
+# stotal is will calculate the total CPU-hours, GPU-hours, and TRES-hours for a user or account.
+
+import sys,os,subprocess,shlex
+import argparse
+import time,datetime
+from datetime import date
