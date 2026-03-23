@@ -49,6 +49,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
       # Converting time to integer time.
       if end == "Unknown":
         end = inendtime
+
       pattern = '%Y-%m-%dT%H:%M:%S'
       start = int(time.mktime(time.strptime(start, pattern)))
       end = int(time.mktime(time.strptime(end, pattern)))
