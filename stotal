@@ -7,20 +7,23 @@ import time,datetime
 from datetime import date
 
 # Calculate Usage
-def calc_usage(user, account, starttime, endtime):
+def calc_usage(inuser, inaccount, instarttime, inendtime):
 
   # Get job data
   if user != None:
-    jobdata = subprocess.Popen(['sacct','-anPXD','--units=G','--format=User,Account,Partition,State,Submit,Start,AllocTRES','-u',user,'-S',starttime,'-E',endtime],
+    jobdata = subprocess.Popen(['sacct','-anPXD','--units=G','--format=User,Account,Partition,Submit,Start,AllocTRES','-u',inuser,'-S',instarttime,'-E',inendtime],
     stdout=subprocess.PIPE,
     universal_newlines=True)
   elif account != None:
-    jobdata = subprocess.Popen(['sacct','-anPXD','--units=G','--format=User,Account,Partition,State,Submit,Start,AllocTRES','-A',account,'-S',starttime,'-E',endtime],
+    jobdata = subprocess.Popen(['sacct','-anPXD','--units=G','--format=User,Account,Partition,Submit,Start,AllocTRES','-A',inaccount,'-S',instarttime,'-E',inendtime],
     stdout=subprocess.PIPE,
     universal_newlines=True)
 
   for job in jobdata.stdout:
-    print(job)
+    (user,account,partition,submit,start,alloctres) = line.strip().split('|')
+    
+    if alloctres != "":
+      print(job)
     
 # Code starts here.
 if __name__ == "__main__":
