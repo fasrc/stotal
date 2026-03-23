@@ -20,7 +20,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
     universal_newlines=True)
 
   for job in jobdata.stdout:
-    (user,account,partition,submit,start,alloctres) = line.strip().split('|')
+    (user,account,partition,submit,start,alloctres) = job.strip().split('|')
     
     if alloctres != "":
       print(job)
