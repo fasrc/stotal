@@ -56,32 +56,35 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   # Iterate over the jobs
   for job in jobdata.stdout:
     (user,account,partition,start,end,alloctres) = job.strip().split('|')
-
+    
     # Ignore jobs that have no allocation. That means they have never run.
     if alloctres != "":
-      # Parsing AllocTRES.
-      atres = dict(s.split("=", 1) for s in shlex.split(alloctres.replace(",", " ")) if '=' in s)
-      cpu = int(atres["cpu"])
-      mem = float(atres["mem"].strip("G"))
-      if 'gres/gpu' in atres:
-        gpu = int(atres['gres/gpu'])
-      else:
-        gpu = 0
-
       # Converting time to integer time.
       if end == "Unknown":
         end = inendtime
-
       pattern = '%Y-%m-%dT%H:%M:%S'
       start = int(time.mktime(time.strptime(start, pattern)))
       end = int(time.mktime(time.strptime(end, pattern)))
+      
+      # Check if job actual ran in window.
+      if start < inend:
+    
+        # Parsing AllocTRES.
+        atres = dict(s.split("=", 1) for s in shlex.split(alloctres.replace(",", " ")) if '=' in s)
+        cpu = int(atres["cpu"])
+        mem = float(atres["mem"].strip("G"))
+        if 'gres/gpu' in atres:
+          gpu = int(atres['gres/gpu'])
+        else:
+          gpu = 0
 
-      # Sum up the usage
-      # Note that this caps the usage only in the window that is specified. The jobs may continue running before and after the window, but we care about the usage in the specific window.
-      elapsedwindow = min(end,inend)-max(start,instart)
-      cputot = cputot+cpu*elapsedwindow
-      gputot = gputot+gpu*elapsedwindow
-      trestot = trestot+(ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)
+        # Sum up the usage
+        # Note that this caps the usage only in the window that is specified. The jobs may continue running before and after the window, but we care about the usage in the specific window.
+        elapsedwindow = min(end,inend)-max(start,instart)
+        print(cpu,gpu,mem,elapsedwindow)
+        cputot = cputot+cpu*elapsedwindow
+        gputot = gputot+gpu*elapsedwindow
+        trestot = trestot+(ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)
 
   # Convert to per hours
   sectohour = 60.0*60.0
