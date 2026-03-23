@@ -10,11 +10,11 @@ from datetime import date
 def calc_usage(inuser, inaccount, instarttime, inendtime):
 
   # Get job data
-  if user != None:
+  if inuser != None:
     jobdata = subprocess.Popen(['sacct','-anPXD','--units=G','--format=User,Account,Partition,Submit,Start,AllocTRES','-u',inuser,'-S',instarttime,'-E',inendtime],
     stdout=subprocess.PIPE,
     universal_newlines=True)
-  elif account != None:
+  elif inaccount != None:
     jobdata = subprocess.Popen(['sacct','-anPXD','--units=G','--format=User,Account,Partition,Submit,Start,AllocTRES','-A',inaccount,'-S',instarttime,'-E',inendtime],
     stdout=subprocess.PIPE,
     universal_newlines=True)
