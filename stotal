@@ -36,7 +36,7 @@ if __name__ == "__main__":
   stotal is will calculate the total CPU-hours, GPU-hours, and TRES-hours for a Slurm user or account.
 
   When passed a user or account (note that for accounts outside of what the user is a member of that user must be either an Operator or Administrator), this
-  command calculates the total usage for that user or account over the period specified (default is last day). Time arguments for starttime and endtime are
+  command calculates the total usage for that user or account over the period specified. Time arguments for starttime and endtime are
   the same as the sacct command.
     
   -----------------
@@ -49,8 +49,8 @@ if __name__ == "__main__":
   )
   parser.add_argument("-u", "--user", action="store", dest="user")
   parser.add_argument("-A", "--account", action="store", dest="account")
-  parser.add_argument("-S", "--starttime", action="store", dest="starttime", default="today-1days") 
-  parser.add_argument("-E", "--endtime", action="store", dest="endtime", default="today")   
+  parser.add_argument("-S", "--starttime", action="store", dest="starttime") 
+  parser.add_argument("-E", "--endtime", action="store", dest="endtime")   
   args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
   calc_usage(args.user, args.account, args.starttime, args.endtime)
