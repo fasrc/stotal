@@ -25,6 +25,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
     
     # Ignore jobs that have no allocation. That means they have never run.
     if alloctres != "":
+      # Parsing AllocTRES.
       atres = dict(s.split("=", 1) for s in shlex.split(alloctres.replace(",", " ")) if '=' in s)
       cpu = int(atres["cpu"])
       mem = float(atres["mem"].strip("G"))
@@ -32,7 +33,12 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
         gpu = int(atres['gres/gpu'])
       else:
         gpu = 0
-        
+
+      # Converting time to integer time.
+      pattern = '%Y-%m-%dT%H:%M:%S'
+      start = int(time.mktime(time.strptime(start, pattern)))
+      end = int(time.mktime(time.strptime(end, pattern)))
+      
       print(user,account,partition,cpu,mem,gpu,start,end)
     
 # Code starts here.
