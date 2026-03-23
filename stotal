@@ -63,7 +63,8 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   cputot = float(cputot)/(60.0 * 60.0)
   gputot = float(gputot)/(60.0 * 60.0)
 
-  print(cputot,gputot)
+  
+  print("CPU-Hours:", cputot,"GPU-Hours:",gputot)
 
 # Code starts here.
 if __name__ == "__main__":
