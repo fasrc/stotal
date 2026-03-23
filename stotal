@@ -51,6 +51,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
 
   cputot = 0
   gputot = 0
+  trestot = 0.
 
   # Iterate over the jobs
   for job in jobdata.stdout:
