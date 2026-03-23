@@ -12,13 +12,13 @@ def calc_usage(user, account, starttime, endtime):
   # Get job data
   if user != None:
     jobdata = subprocess.Popen(['sacct','-anP','--units=G','--format=User,Account,Partition,State,ElapsedRaw,ReqMem,AllocCPUS,Submit,Start,ReqTRES','-u',user,'-S',starttime,'-E',endtime]).split(),
-      stdout=subprocess.PIPE,
-      universal_newlines=True
+    stdout=subprocess.PIPE,
+    universal_newlines=True
     )
   elif account != None:
     jobdata = subprocess.Popen(['sacct','-anP','--units=G','--format=User,Account,Partition,State,ElapsedRaw,ReqMem,AllocCPUS,Submit,Start,ReqTRES','-A',account,'-S',starttime,'-E',endtime]).split(),
-      stdout=subprocess.PIPE,
-      universal_newlines=True
+    stdout=subprocess.PIPE,
+    universal_newlines=True
     )
 
   for job in jobdata.stdout:
