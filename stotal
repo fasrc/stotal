@@ -81,7 +81,6 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
         # Sum up the usage
         # Note that this caps the usage only in the window that is specified. The jobs may continue running before and after the window, but we care about the usage in the specific window.
         elapsedwindow = min(end,inend)-max(start,instart)
-        print(cpu,gpu,mem,elapsedwindow)
         cputot = cputot+cpu*elapsedwindow
         gputot = gputot+gpu*elapsedwindow
         trestot = trestot+(ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)
