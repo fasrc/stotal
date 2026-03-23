@@ -28,6 +28,9 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   instart = int(time.mktime(time.strptime(instarttime, pattern)))
   inend = int(time.mktime(time.strptime(inendtime, pattern)))
 
+  cputot = 0
+  gputot = 0
+
   # Iterate over the jobs
   for job in jobdata.stdout:
     (user,account,partition,start,end,alloctres) = job.strip().split('|')
@@ -48,7 +51,12 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
       start = int(time.mktime(time.strptime(start, pattern)))
       end = int(time.mktime(time.strptime(end, pattern)))
       
-      print(user,account,partition,cpu,mem,gpu,start,end,instart,inend)
+      # Sum up the usage
+      # Note that this caps the usage only in the window that is specified. The jobs may continue running before and after the window, but we care about the usage in the specific window.
+      cputot = cputot+cpu*(min(end,inend)-max(start,instart))
+      gputot = gputot+gpu*(min(end,inend)-max(start,instart))
+
+  print(cputot,gputot)
     
 # Code starts here.
 if __name__ == "__main__":
