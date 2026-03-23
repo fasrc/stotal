@@ -34,7 +34,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   # Iterate over the jobs
   for job in jobdata.stdout:
     (user,account,partition,start,end,alloctres) = job.strip().split('|')
-    
+
     # Ignore jobs that have no allocation. That means they have never run.
     if alloctres != "":
       # Parsing AllocTRES.
@@ -47,10 +47,12 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
         gpu = 0
 
       # Converting time to integer time.
+      if end = "Unknown":
+        end = inendtime
       pattern = '%Y-%m-%dT%H:%M:%S'
       start = int(time.mktime(time.strptime(start, pattern)))
       end = int(time.mktime(time.strptime(end, pattern)))
-      
+
       # Sum up the usage
       # Note that this caps the usage only in the window that is specified. The jobs may continue running before and after the window, but we care about the usage in the specific window.
       cputot = cputot+cpu*(min(end,inend)-max(start,instart))
@@ -61,7 +63,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   gputot = float(gputot)/(60.0 * 60.0)
 
   print(cputot,gputot)
-    
+
 # Code starts here.
 if __name__ == "__main__":
 
@@ -75,7 +77,7 @@ if __name__ == "__main__":
   When passed a user or account (note that for accounts outside of what the user is a member of that user must be either an Operator or Administrator), this
   command calculates the total usage for that user or account over the period specified. Time arguments for starttime and endtime are
   the same as the sacct command.
-    
+
   -----------------
   """
   )
@@ -86,8 +88,8 @@ if __name__ == "__main__":
   )
   parser.add_argument("-u", "--user", action="store", dest="user")
   parser.add_argument("-A", "--account", action="store", dest="account")
-  parser.add_argument("-S", "--starttime", action="store", dest="starttime") 
-  parser.add_argument("-E", "--endtime", action="store", dest="endtime")   
+  parser.add_argument("-S", "--starttime", action="store", dest="starttime")
+  parser.add_argument("-E", "--endtime", action="store", dest="endtime")
   args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
   calc_usage(args.user, args.account, args.starttime, args.endtime)
