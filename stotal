@@ -47,7 +47,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
         gpu = 0
 
       # Converting time to integer time.
-      if end = "Unknown":
+      if end == "Unknown":
         end = inendtime
       pattern = '%Y-%m-%dT%H:%M:%S'
       start = int(time.mktime(time.strptime(start, pattern)))
