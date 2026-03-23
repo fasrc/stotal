@@ -28,6 +28,27 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   instart = int(time.mktime(time.strptime(instarttime, pattern)))
   inend = int(time.mktime(time.strptime(inendtime, pattern)))
 
+  # Get Partition TRES Table
+  ptresweightcpu={}
+  ptresweightmem={}
+  ptresweightgpu={}
+  partlist = subprocess.Popen(['scontrol','-o','show','partition'], stdout=subprocess.PIPE, universal_newlines=True)
+  for line in partlist.stdout:
+    #Sanitize input
+    line = line.replace("'", "\\'")
+    
+    #Turn partition information into a hash
+    part = dict(s.split("=", 1) for s in shlex.split(line) if '=' in s)
+    
+    #Get the TRESBillingWeights for a partition
+    tresweight = dict(s.split("=", 1) for s in shlex.split(part['TRESBillingWeights'].replace(",", " ")) if '=' in s)
+    ptresweightcpu[part["PartitionName"]] = float(tresweight['CPU'])
+    ptresweightmem[part["PartitionName"]] = float(tresweight['Mem'].strip('G'))
+    if 'Gres/gpu' in tresweight:
+      ptresweightgpu[part["PartitionName"]] = float(tresweight['Gres/gpu'])
+    else:
+      ptresweightgpu[part["PartitionName"]] = 0.0 
+
   cputot = 0
   gputot = 0
 
@@ -56,15 +77,19 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
 
       # Sum up the usage
       # Note that this caps the usage only in the window that is specified. The jobs may continue running before and after the window, but we care about the usage in the specific window.
-      cputot = cputot+cpu*(min(end,inend)-max(start,instart))
-      gputot = gputot+gpu*(min(end,inend)-max(start,instart))
+      elapsedwindow = min(end,inend)-max(start,instart)
+      cputot = cputot+cpu*elapsedwindow
+      gputot = gputot+gpu*elapsedwindow
+      trestot = trestot+(ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)
 
   # Convert to per hours
-  cputot = float(cputot)/(60.0 * 60.0)
-  gputot = float(gputot)/(60.0 * 60.0)
+  sectohour = 60.0*60.0
+  cputot = float(cputot)/sectohour
+  gputot = float(gputot)/sectohour
+  trestot = float(trestot)/sectohour
 
-  
-  print("CPU-Hours:", cputot,"GPU-Hours:",gputot)
+  # Print results
+  print("CPU-Hours:", cputot,"GPU-Hours:",gputot,"TRES-Hours:",trestot)
 
 # Code starts here.
 if __name__ == "__main__":
