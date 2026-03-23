@@ -11,19 +11,29 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
 
   # Get job data
   if inuser != None:
-    jobdata = subprocess.Popen(['sacct','-anPXD','--units=G','--format=User,Account,Partition,Submit,Start,AllocTRES','-u',inuser,'-S',instarttime,'-E',inendtime],
+    jobdata = subprocess.Popen(['sacct','-anPXD','--units=G','--format=User,Account,Partition,Start,End,AllocTRES','-u',inuser,'-S',instarttime,'-E',inendtime],
     stdout=subprocess.PIPE,
     universal_newlines=True)
   elif inaccount != None:
-    jobdata = subprocess.Popen(['sacct','-anPXD','--units=G','--format=User,Account,Partition,Submit,Start,AllocTRES','-A',inaccount,'-S',instarttime,'-E',inendtime],
+    jobdata = subprocess.Popen(['sacct','-anPXD','--units=G','--format=User,Account,Partition,Start,End,AllocTRES','-A',inaccount,'-S',instarttime,'-E',inendtime],
     stdout=subprocess.PIPE,
     universal_newlines=True)
 
+  # Iterate over the jobs
   for job in jobdata.stdout:
-    (user,account,partition,submit,start,alloctres) = job.strip().split('|')
+    (user,account,partition,start,end,alloctres) = job.strip().split('|')
     
+    # Ignore jobs that have no allocation. That means they have never run.
     if alloctres != "":
-      print(job)
+      atres = dict(s.split("=", 1) for s in shlex.split(alloctres.replace(",", " ")) if '=' in s)
+      cpu = int(atres["cpu"])
+      mem = float(atres["mem"].strip("G"))
+      if 'gres/gpu' in atres:
+        gpu = int(atres['gres/gpu'])
+      else:
+        gpu = 0
+        
+      print(user,account,partition,cpu,mem,gpu,start,end)
     
 # Code starts here.
 if __name__ == "__main__":
