@@ -161,7 +161,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv):
   #Now for a specific account
   elif inaccount != None:
     # Sum up all jobs over all users for this account
-   if header:
+    if header:
       if csv:
         print(f"Start,{instarttime}")
         print(f"End,{inendtime}")
