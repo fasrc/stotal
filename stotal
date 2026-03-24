@@ -139,9 +139,9 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
         print(f"  End:   {inendtime}")
         print(f"Total Hours: {hourrange:.2f}")
         if details:
-          print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+          print(f"Account                 User                          CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
         else:
-          print(f"                     User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+          print(f"                        User                          CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
 
     # Sum up all jobs over all accounts for this user
     for a in alsort:
@@ -154,13 +154,13 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
         if csv:
           print(f"{a},{inuser},{cputotau[a][inuser]},{memtotau[a][inuser]},{gputotau[a][inuser]},{trestotau[a][inuser]}")
         else:
-          print(f"{a:20} {inuser:20} {cputotau[a][inuser]:15.2f} {memtotau[a][inuser]:15.2f} {gputotau[a][inuser]:15.2f} {trestotau[a][inuser]:15.2f}")
+          print(f"{a:23} {inuser:23} {cputotau[a][inuser]:15.2f} {memtotau[a][inuser]:15.2f} {gputotau[a][inuser]:15.2f} {trestotau[a][inuser]:15.2f}")
 
     # Print summary
     if csv:
       print(f"Total,{inuser},{cputot},{memtot},{gputot},{trestot}")
     else:
-      print(f"Total:               {inuser:20} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
+      print(f"Total:               {inuser:23} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
   #Now for a specific account
   elif inaccount != None:
     # Print header
@@ -179,9 +179,9 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
         print(f"  End:   {inendtime}")
         print(f"Total Hours: {hourrange:.2f}")
         if details:
-          print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+          print(f"Account                 User                          CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
         else:
-          print(f"                     Account                    CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+          print(f"                        Account                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
     # Sum up all jobs over all users for this account
     for u in ulsort:
       cputot = cputot + cputotau[inaccount][u]
@@ -193,13 +193,13 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
         if csv:
           print(f"{inaccount},{u},{cputotau[inaccount][u]},{memtotau[inaccount][u]},{gputotau[inaccount][u]},{trestotau[inaccount][u]}")
         else:
-          print(f"{inaccount:20} {u:20} {cputotau[inaccount][u]:15.2f} {memtotau[inaccount][u]:15.2f} {gputotau[inaccount][u]:15.2f} {trestotau[inaccount][u]:15.2f}")
+          print(f"{inaccount:23} {u:23} {cputotau[inaccount][u]:15.2f} {memtotau[inaccount][u]:15.2f} {gputotau[inaccount][u]:15.2f} {trestotau[inaccount][u]:15.2f}")
 
     # Print summary
     if csv:
       print(f"Total,{inaccount},{cputot},{memtot},{gputot},{trestot}")
     else:
-      print(f"Total:               {inaccount:20} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
+      print(f"Total:                  {inaccount:23} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
   #Now for everything!
   elif allaccounts:
     # Print header
@@ -218,9 +218,9 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
         print(f"  End:   {inendtime}")
         print(f"Total Hours: {hourrange:.2f}")
         if details:
-          print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+          print(f"Account                 User                          CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
         else:
-          print(f"                     Account                    CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+          print(f"                        Account                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
     # Sum up all jobs over all users in accounts
     for a in alsort:
       # Zero out counters
@@ -246,7 +246,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
             if csv:
               print(f"{a},{u},{cputotau[a][u]},{memtotau[a][u]},{gputotau[a][u]},{trestotau[a][u]}")
             else:
-              print(f"{a:20} {u:20} {cputotau[a][u]:15.2f} {memtotau[a][u]:15.2f} {gputotau[a][u]:15.2f} {trestotau[a][u]:15.2f}")
+              print(f"{a:23} {u:23} {cputotau[a][u]:15.2f} {memtotau[a][u]:15.2f} {gputotau[a][u]:15.2f} {trestotau[a][u]:15.2f}")
         except:
           continue
 
@@ -254,13 +254,13 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
       if csv:
         print(f",{a},{cputota},{memtota},{gputota},{trestota}")
       else:
-        print(f"                     {a:20} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
+        print(f"                     {a:23} {cputota:15.2f} {memtota:15.2f} {gputota:15.2f} {trestota:15.2f}")
 
     # Print overall summary
     if csv:
       print(f"Total,,{cputot},{memtot},{gputot},{trestot}")
     else:
-      print(f"Total:                                    {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
+      print(f"Total:                                          {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
 
 # Code starts here.
 if __name__ == "__main__":
