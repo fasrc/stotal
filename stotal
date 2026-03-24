@@ -50,6 +50,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
       ptresweightgpu[part["PartitionName"]] = 0.0 
 
   cputot = 0
+  memtot = 0.
   gputot = 0
   trestot = 0.
 
@@ -82,6 +83,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
         # Note that this caps the usage only in the window that is specified. The jobs may continue running before and after the window, but we care about the usage in the specific window.
         elapsedwindow = min(end,inend)-max(start,instart)
         cputot = cputot+cpu*elapsedwindow
+        memtot = memtot+mem*elapsedwindow
         gputot = gputot+gpu*elapsedwindow
         trestot = trestot+(ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)
 
@@ -89,11 +91,12 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   sectohour = 60.0*60.0
   hourrange = (float(inend)-float(instart))/sectohour
   cputot = float(cputot)/sectohour
+  memtot = float(memtot)/sectohour
   gputot = float(gputot)/sectohour
   trestot = float(trestot)/sectohour
 
   # Print results
-  print(f"Number of Hours in Window: {hourrange:.1f} CPU-Hours: {cputot:.1f} GPU-Hours: {gputot:.1f} TRES-Hours: {trestot:.1f}")
+  print(f"Number of Hours in Window: {hourrange:.2f} CPU-Hours: {cputot:.2f} Mem-Hours (GB): {memtot:.2f} GPU-Hours: {gputot:.2f} TRES-Hours: {trestot:.2f}")
 
 # Code starts here.
 if __name__ == "__main__":
