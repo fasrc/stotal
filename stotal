@@ -119,15 +119,15 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   if inuser != None:
     # Sum up all jobs over all accounts for this user
     print(f"Window Start: {instarttime} Window End: {inendtime} Total Hours: {hourrange:.2f}")
-    print(f"Account              User                     CPU-Hours Mem-Hours(GB)    GPU-Hours   TRES-Hours")
+    print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
     for a in al:
       cputot = cputot + cputotau[a][inuser]
       memtot = memtot + memtotau[a][inuser]
       gputot = gputot + gputotau[a][inuser]
       trestot = trestot + trestotau[a][inuser]
-      print(f"{a:20} {inuser:20} {cputotau[a][inuser]:13.2f} {memtotau[a][inuser]:13.2f} {gputotau[a][inuser]:13.2f} {trestotau[a][inuser]:13.2f}")
+      print(f"{a:20} {inuser:20} {cputotau[a][inuser]:15.2f} {memtotau[a][inuser]:15.2f} {gputotau[a][inuser]:15.2f} {trestotau[a][inuser]:15.2f}")
 
-    print(f"Total:               {inuser:20} {cputot:13.2f} {memtot:13.2f} {gputot:13.2f} {trestot:13.2f}")
+    print(f"Total:               {inuser:20} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
 
 
 # Code starts here.
