@@ -115,12 +115,14 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
           gputotau[account] = {user: gpu*elapsedwindow}
           trestotau[account] = {user: (ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)}
 
+  alsort = dict(sorted(al.items()))
+
   # Compute Sums And Output Data
   if inuser != None:
     # Sum up all jobs over all accounts for this user
     print(f"Window Start: {instarttime} Window End: {inendtime} Total Hours: {hourrange:.2f}")
     print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
-    for a in al:
+    for a in alsort:
       cputot = cputot + cputotau[a][inuser]
       memtot = memtot + memtotau[a][inuser]
       gputot = gputot + gputotau[a][inuser]
