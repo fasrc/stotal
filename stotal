@@ -125,9 +125,9 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
       memtot = memtot + memtotau[a][inuser]
       gputot = gputot + gputotau[a][inuser]
       trestot = trestot + trestotau[a][inuser]
-      print(f"{a} {inuser} {cputotau[a][inuser]:.2f} {memtotau[a][inuser]:.2f} {gputotau[a][inuser]:.2f} {trestotau[a][inuser]:.2f}")
+      print(f"{a:32f} {inuser:32f} {cputotau[a][inuser]:12.2f} {memtotau[a][inuser]:12.2f} {gputotau[a][inuser]:12.2f} {trestotau[a][inuser]:12.2f}")
 
-    print(f"Total: {inuser} {cputot:.2f} {memtot:.2f} {gputot:.2f} {trestot:.2f}")
+    print(f"Total: {inuser:32f} {cputot:12.2f} {memtot:12.2f} {gputot:12.2f} {trestot:12.2f}")
 
 
 # Code starts here.
