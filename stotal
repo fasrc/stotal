@@ -7,7 +7,7 @@ import time,datetime
 from datetime import date
 
 # Calculate Usage
-def calc_usage(inuser, inaccount, instarttime, inendtime):
+def calc_usage(inuser, inaccount, instarttime, inendtime, header):
 
   # Get job data
   if inuser != None:
@@ -125,11 +125,12 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   # First we will do the case where we are grabbing info for a specific user.
   if inuser != None:
     # Sum up all jobs over all accounts for this user
-    print(f"Window")
-    print(f"  Start: {instarttime}")
-    print(f"  End:   {inendtime}")
-    print(f"Total Hours: {hourrange:.2f}")
-    print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+    if header:
+      print(f"Window")
+      print(f"  Start: {instarttime}")
+      print(f"  End:   {inendtime}")
+      print(f"Total Hours: {hourrange:.2f}")
+      print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
     for a in alsort:
       cputot = cputot + cputotau[a][inuser]
       memtot = memtot + memtotau[a][inuser]
@@ -141,11 +142,12 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   #Now for a specific account
   elif inaccount != None:
     # Sum up all jobs over all users for this account
-    print(f"Window")
-    print(f"  Start: {instarttime}")
-    print(f"  End:   {inendtime}")
-    print(f"Total Hours: {hourrange:.2f}")
-    print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+    if header:
+      print(f"Window")
+      print(f"  Start: {instarttime}")
+      print(f"  End:   {inendtime}")
+      print(f"Total Hours: {hourrange:.2f}")
+      print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
     for u in ulsort:
       cputot = cputot + cputotau[inaccount][u]
       memtot = memtot + memtotau[inaccount][u]
@@ -182,6 +184,7 @@ if __name__ == "__main__":
   parser.add_argument("-A", "--account", action="store", dest="account")
   parser.add_argument("-S", "--starttime", action="store", dest="starttime")
   parser.add_argument("-E", "--endtime", action="store", dest="endtime")
+  parser.add_argument("-n","--noheader", action="store_false", dest="header")
   args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
-  calc_usage(args.user, args.account, args.starttime, args.endtime)
+  calc_usage(args.user, args.account, args.starttime, args.endtime, args.header)
