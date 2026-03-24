@@ -130,7 +130,10 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details):
       print(f"  Start: {instarttime}")
       print(f"  End:   {inendtime}")
       print(f"Total Hours: {hourrange:.2f}")
-      print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+      if details:
+        print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+      else:
+        print(f"                     User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
     for a in alsort:
       cputot = cputot + cputotau[a][inuser]
       memtot = memtot + memtotau[a][inuser]
@@ -147,7 +150,10 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details):
       print(f"  Start: {instarttime}")
       print(f"  End:   {inendtime}")
       print(f"Total Hours: {hourrange:.2f}")
-      print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+      if details:
+        print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+      else:
+        print(f"                     Account                    CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
     for u in ulsort:
       cputot = cputot + cputotau[inaccount][u]
       memtot = memtot + memtotau[inaccount][u]
