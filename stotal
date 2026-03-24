@@ -160,7 +160,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
     if csv:
       print(f"Total,{inuser},{cputot},{memtot},{gputot},{trestot}")
     else:
-      print(f"Total:               {inuser:23} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
+      print(f"Total:                  {inuser:23} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
   #Now for a specific account
   elif inaccount != None:
     # Print header
