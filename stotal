@@ -7,7 +7,7 @@ import time,datetime
 from datetime import date
 
 # Calculate Usage
-def calc_usage(inuser, inaccount, instarttime, inendtime, header, details):
+def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv):
 
   # Get job data
   if inuser != None:
@@ -126,42 +126,74 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details):
   if inuser != None:
     # Sum up all jobs over all accounts for this user
     if header:
-      print(f"Window")
-      print(f"  Start: {instarttime}")
-      print(f"  End:   {inendtime}")
-      print(f"Total Hours: {hourrange:.2f}")
-      if details:
-        print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+      if csv:
+        print(f"Start,{instarttime}")
+        print(f"End,{inendtime}")
+        print(f"Total Hours,{hourrange:.2f}")
+        if details:
+          print(f"Account,User,CPU-Hours,Mem-Hours(GB),GPU-Hours,TRES-Hours")
+        else:
+          print(f",User,CPU-Hours,Mem-Hours(GB),GPU-Hours,TRES-Hours")
       else:
-        print(f"                     User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+        print(f"Window")
+        print(f"  Start: {instarttime}")
+        print(f"  End:   {inendtime}")
+        print(f"Total Hours: {hourrange:.2f}")
+        if details:
+          print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+        else:
+          print(f"                     User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
     for a in alsort:
       cputot = cputot + cputotau[a][inuser]
       memtot = memtot + memtotau[a][inuser]
       gputot = gputot + gputotau[a][inuser]
       trestot = trestot + trestotau[a][inuser]
-      if details: print(f"{a:20} {inuser:20} {cputotau[a][inuser]:15.2f} {memtotau[a][inuser]:15.2f} {gputotau[a][inuser]:15.2f} {trestotau[a][inuser]:15.2f}")
+      if details:
+        if csv:
+          print(f"{a},{inuser},{cputotau[a][inuser]},{memtotau[a][inuser]},{gputotau[a][inuser]},{trestotau[a][inuser]}")
+        else:
+          print(f"{a:20} {inuser:20} {cputotau[a][inuser]:15.2f} {memtotau[a][inuser]:15.2f} {gputotau[a][inuser]:15.2f} {trestotau[a][inuser]:15.2f}")
 
-    print(f"Total:               {inuser:20} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
+    if csv:
+      print(f"Total,{inuser},{cputot},{memtot},{gputot},{trestot}")
+    else:
+      print(f"Total:               {inuser:20} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
   #Now for a specific account
   elif inaccount != None:
     # Sum up all jobs over all users for this account
-    if header:
-      print(f"Window")
-      print(f"  Start: {instarttime}")
-      print(f"  End:   {inendtime}")
-      print(f"Total Hours: {hourrange:.2f}")
-      if details:
-        print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+   if header:
+      if csv:
+        print(f"Start,{instarttime}")
+        print(f"End,{inendtime}")
+        print(f"Total Hours,{hourrange:.2f}")
+        if details:
+          print(f"Account,User,CPU-Hours,Mem-Hours(GB),GPU-Hours,TRES-Hours")
+        else:
+          print(f",Account,CPU-Hours,Mem-Hours(GB),GPU-Hours,TRES-Hours")
       else:
-        print(f"                     Account                    CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+        print(f"Window")
+        print(f"  Start: {instarttime}")
+        print(f"  End:   {inendtime}")
+        print(f"Total Hours: {hourrange:.2f}")
+        if details:
+          print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+        else:
+          print(f"                     Account                    CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
     for u in ulsort:
       cputot = cputot + cputotau[inaccount][u]
       memtot = memtot + memtotau[inaccount][u]
       gputot = gputot + gputotau[inaccount][u]
       trestot = trestot + trestotau[inaccount][u]
-      if details: print(f"{inaccount:20} {u:20} {cputotau[inaccount][u]:15.2f} {memtotau[inaccount][u]:15.2f} {gputotau[inaccount][u]:15.2f} {trestotau[inaccount][u]:15.2f}")
+      if details:
+        if csv:
+          print(f"{inaccount},{u},{cputotau[inaccount][u]},{memtotau[inaccount][u]},{gputotau[inaccount][u]},{trestotau[inaccount][u]}")
+        else:
+          print(f"{inaccount:20} {u:20} {cputotau[inaccount][u]:15.2f} {memtotau[inaccount][u]:15.2f} {gputotau[inaccount][u]:15.2f} {trestotau[inaccount][u]:15.2f}")
 
-    print(f"Total:               {inaccount:20} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
+    if csv:
+      print(f"Total,{inaccount},{cputot},{memtot},{gputot},{trestot}")
+    else:
+      print(f"Total:               {inaccount:20} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
 
 
 # Code starts here.
@@ -192,6 +224,7 @@ if __name__ == "__main__":
   parser.add_argument("-E", "--endtime", action="store", dest="endtime")
   parser.add_argument("-n","--noheader", action="store_false", dest="header")
   parser.add_argument("-d","--details", action="store_true", dest="details")
+  parser.add_argument("--csv", action="store_true", dest="csv")
   args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
-  calc_usage(args.user, args.account, args.starttime, args.endtime, args.header, args.details)
+  calc_usage(args.user, args.account, args.starttime, args.endtime, args.header, args.details, args.csv)
