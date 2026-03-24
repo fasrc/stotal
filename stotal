@@ -96,7 +96,8 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   trestot = float(trestot)/sectohour
 
   # Print results
-  print(f"Number of Hours in Window: {hourrange:.2f} CPU-Hours: {cputot:.2f} Mem-Hours (GB): {memtot:.2f} GPU-Hours: {gputot:.2f} TRES-Hours: {trestot:.2f}")
+  print(f"Window Start: {instarttime} Window End: {inendtime} Total Hours: {hourrange:.2f}")
+  print(f"CPU-Hours: {cputot:.2f} Mem-Hours (GB): {memtot:.2f} GPU-Hours: {gputot:.2f} TRES-Hours: {trestot:.2f}")
 
 # Code starts here.
 if __name__ == "__main__":
