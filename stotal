@@ -125,7 +125,10 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   # First we will do the case where we are grabbing info for a specific user.
   if inuser != None:
     # Sum up all jobs over all accounts for this user
-    print(f"Window Start: {instarttime} Window End: {inendtime} Total Hours: {hourrange:.2f}")
+    print(f"Window")
+    print(f"  Start: {instarttime}")
+    print(f"  End:   {inendtime}")
+    print(f"Total Hours: {hourrange:.2f}")
     print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
     for a in alsort:
       cputot = cputot + cputotau[a][inuser]
@@ -138,7 +141,10 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   #Now for a specific account
   elif inaccount != None:
     # Sum up all jobs over all users for this account
-    print(f"Window Start: {instarttime} Window End: {inendtime} Total Hours: {hourrange:.2f}")
+    print(f"Window")
+    print(f"  Start: {instarttime}")
+    print(f"  End:   {inendtime}")
+    print(f"Total Hours: {hourrange:.2f}")
     print(f"Account              User                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
     for u in ulsort:
       cputot = cputot + cputotau[inaccount][u]
