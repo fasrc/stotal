@@ -27,6 +27,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   pattern = '%Y-%m-%dT%H:%M:%S'
   instart = int(time.mktime(time.strptime(instarttime, pattern)))
   inend = int(time.mktime(time.strptime(inendtime, pattern)))
+  hourrange = (inend - instart)/3600.0
 
   # Get Partition TRES Table
   ptresweightcpu={}
