@@ -54,6 +54,18 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
   gputot = 0
   trestot = 0.
 
+  al = {}
+
+  cputota = {}
+  memtota = {}
+  gputota = {}
+  trestota = {}
+
+  cputotau = {}
+  memtotau = {}
+  gputotau = {}
+  trestotau = {}
+
   # Iterate over the jobs
   for job in jobdata.stdout:
     (user,account,partition,start,end,alloctres) = job.strip().split('|')
@@ -69,7 +81,9 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
       
       # Check if job actual ran in window.
       if start < inend:
-    
+        # Storing dummy variable to get account list.
+        al[account] = 1
+
         # Parsing AllocTRES.
         atres = dict(s.split("=", 1) for s in shlex.split(alloctres.replace(",", " ")) if '=' in s)
         cpu = int(atres["cpu"])
@@ -81,23 +95,33 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
 
         # Sum up the usage
         # Note that this caps the usage only in the window that is specified. The jobs may continue running before and after the window, but we care about the usage in the specific window.
-        elapsedwindow = min(end,inend)-max(start,instart)
-        cputot = cputot+cpu*elapsedwindow
-        memtot = memtot+mem*elapsedwindow
-        gputot = gputot+gpu*elapsedwindow
-        trestot = trestot+(ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)
+        elapsedwindow = (min(end,inend)-max(start,instart))/(3600.0)
 
-  # Convert to per hours
-  sectohour = 60.0*60.0
-  hourrange = (float(inend)-float(instart))/sectohour
-  cputot = float(cputot)/sectohour
-  memtot = float(memtot)/sectohour
-  gputot = float(gputot)/sectohour
-  trestot = float(trestot)/sectohour
+        try:
+          cputotau[account][user] = cputotau[account][user]+cpu*elapsedwindow
+          memtotau[account][user] = memtotau[account][user]+mem*elapsedwindow
+          gputotau[account][user] = gputotau[account][user]+gpu*elapsedwindow
+          trestotau[account][user] = trestotau[account][user]+(ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)
+        except:
+          cputotau[account][user] = cpu*elapsedwindow
+          memtotau[account][user] = mem*elapsedwindow
+          gputotau[account][user] = gpu*elapsedwindow
+          trestotau[account][user] = (ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)
 
-  # Print results
-  print(f"Window Start: {instarttime} Window End: {inendtime} Total Hours: {hourrange:.2f}")
-  print(f"CPU-Hours: {cputot:.2f} Mem-Hours (GB): {memtot:.2f} GPU-Hours: {gputot:.2f} TRES-Hours: {trestot:.2f}")
+  # Compute Sums And Output Data
+  if inuser != None:
+    # Sum up all jobs over all accounts for this user
+    print(f"Window Start: {instarttime} Window End: {inendtime} Total Hours: {hourrange:.2f}")
+    print(f"Account User CPU-Hours Mem-Hours(GB) GPU-Hours TRES-Hours")
+    for a in al:
+      cputot = cputot + cputotau[a][inuser]
+      memtot = memtot + memtotau[a][inuser]
+      gputot = gputot + gputotau[a][inuser]
+      trestot = trestot + trestotau[a][inuser]
+      print(f"{a} {inuser} {cputotau[a][inuser]:.2f} {memtotau[a][inuser]:.2f} {gputotau[a][inuser]:.2f} {trestotau[a][inuser]:.2f}")
+
+    print(f"Total: {inuser} {cputot:.2f} {memtot:.2f} {gputot:.2f} {trestot:.2f}")
+
 
 # Code starts here.
 if __name__ == "__main__":
