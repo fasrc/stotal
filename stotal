@@ -98,15 +98,21 @@ def calc_usage(inuser, inaccount, instarttime, inendtime):
         elapsedwindow = (min(end,inend)-max(start,instart))/(3600.0)
 
         try:
-          cputotau[account][user] = cputotau[account][user]+cpu*elapsedwindow
-          memtotau[account][user] = memtotau[account][user]+mem*elapsedwindow
-          gputotau[account][user] = gputotau[account][user]+gpu*elapsedwindow
-          trestotau[account][user] = trestotau[account][user]+(ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)
+          try:
+            cputotau[account][user] = cputotau[account][user]+cpu*elapsedwindow
+            memtotau[account][user] = memtotau[account][user]+mem*elapsedwindow
+            gputotau[account][user] = gputotau[account][user]+gpu*elapsedwindow
+            trestotau[account][user] = trestotau[account][user]+(ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)
+          except:
+            cputotau[account][user] = cpu*elapsedwindow
+            memtotau[account][user] = mem*elapsedwindow
+            gputotau[account][user] = gpu*elapsedwindow
+            trestotau[account][user] = (ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)
         except:
-          cputotau[account][user] = cpu*elapsedwindow
-          memtotau[account][user] = mem*elapsedwindow
-          gputotau[account][user] = gpu*elapsedwindow
-          trestotau[account][user] = (ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)
+          cputotau[account] = {user: cpu*elapsedwindow}
+          memtotau[account] = {user: mem*elapsedwindow}
+          gputotau[account] = {user: gpu*elapsedwindow}
+          trestotau[account] = {user: (ptresweightcpu[partition]*float(cpu)+ptresweightmem[partition]*mem+ptresweightgpu[partition]*float(gpu))*float(elapsedwindow)}
 
   # Compute Sums And Output Data
   if inuser != None:
