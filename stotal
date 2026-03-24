@@ -136,7 +136,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details):
       memtot = memtot + memtotau[a][inuser]
       gputot = gputot + gputotau[a][inuser]
       trestot = trestot + trestotau[a][inuser]
-      if details print(f"{a:20} {inuser:20} {cputotau[a][inuser]:15.2f} {memtotau[a][inuser]:15.2f} {gputotau[a][inuser]:15.2f} {trestotau[a][inuser]:15.2f}")
+      if details: print(f"{a:20} {inuser:20} {cputotau[a][inuser]:15.2f} {memtotau[a][inuser]:15.2f} {gputotau[a][inuser]:15.2f} {trestotau[a][inuser]:15.2f}")
 
     print(f"Total:               {inuser:20} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
   #Now for a specific account
@@ -153,7 +153,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details):
       memtot = memtot + memtotau[inaccount][u]
       gputot = gputot + gputotau[inaccount][u]
       trestot = trestot + trestotau[inaccount][u]
-      if details print(f"{inaccount:20} {u:20} {cputotau[inaccount][u]:15.2f} {memtotau[inaccount][u]:15.2f} {gputotau[inaccount][u]:15.2f} {trestotau[inaccount][u]:15.2f}")
+      if details: print(f"{inaccount:20} {u:20} {cputotau[inaccount][u]:15.2f} {memtotau[inaccount][u]:15.2f} {gputotau[inaccount][u]:15.2f} {trestotau[inaccount][u]:15.2f}")
 
     print(f"Total:               {inaccount:20} {cputot:15.2f} {memtot:15.2f} {gputot:15.2f} {trestot:15.2f}")
 
