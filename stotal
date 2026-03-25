@@ -179,7 +179,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
         print(f"  End:   {inendtime}")
         print(f"Total Hours: {hourrange:.2f}")
         if details:
-          print(f"Account                 User                          CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
+          print(f"User                    Account                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
         else:
           print(f"                        Account                       CPU-Hours   Mem-Hours(GB)       GPU-Hours      TRES-Hours")
     # Sum up all jobs over all users for this account
@@ -191,9 +191,9 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
       # Print
       if details:
         if csv:
-          print(f"{inaccount},{u},{cputotau[inaccount][u]},{memtotau[inaccount][u]},{gputotau[inaccount][u]},{trestotau[inaccount][u]}")
+          print(f"{u},{inaccount},{cputotau[inaccount][u]},{memtotau[inaccount][u]},{gputotau[inaccount][u]},{trestotau[inaccount][u]}")
         else:
-          print(f"{inaccount:23} {u:23} {cputotau[inaccount][u]:15.2f} {memtotau[inaccount][u]:15.2f} {gputotau[inaccount][u]:15.2f} {trestotau[inaccount][u]:15.2f}")
+          print(f"{u:23} {inaccount:23} {cputotau[inaccount][u]:15.2f} {memtotau[inaccount][u]:15.2f} {gputotau[inaccount][u]:15.2f} {trestotau[inaccount][u]:15.2f}")
 
     # Print summary
     if csv:
@@ -209,7 +209,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
         print(f"End,{inendtime}")
         print(f"Total Hours,{hourrange:.2f}")
         if details:
-          print(f"Account,User,CPU-Hours,Mem-Hours(GB),GPU-Hours,TRES-Hours")
+          print(f"User,Account,CPU-Hours,Mem-Hours(GB),GPU-Hours,TRES-Hours")
         else:
           print(f",Account,CPU-Hours,Mem-Hours(GB),GPU-Hours,TRES-Hours")
       else:
