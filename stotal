@@ -80,8 +80,8 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
       start = int(time.mktime(time.strptime(start, pattern)))
       end = int(time.mktime(time.strptime(end, pattern)))
       
-      # Check if job actual ran in window.
-      if start < inend:
+      # Check if job actual ran in window and sanity check if job actually has sensible time.
+      if start < inend and start < end:
         # Storing dummy variable to get account and user list.
         al[account] = 1
         ul[user] = 1
