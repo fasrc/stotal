@@ -9,12 +9,6 @@ from datetime import date
 # Calculate Usage
 def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, allaccounts):
 
-  # The start and end time for sacct is ambigous. This makes sure that you get the full day.
-  if 'T' not in instarttime:
-    instarttime=instarttime+'T00:00:00'
-  if 'T' not in inendtime:
-    inendtime=inendtime+'T23:59:59'
-
   # Get job data
   if inuser != None:
     jobdata = subprocess.Popen(['sacct','-anPXD','--units=G','--format=User,Account,Partition,Start,End,AllocTRES','-u',inuser,'-S',instarttime,'-E',inendtime],
@@ -29,7 +23,11 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
     stdout=subprocess.PIPE,
     universal_newlines=True)
 
-  # Converting time to integer time.
+  # Converting time to integer time. Note that sacct defaults to 00:00:00 for both -S and -E
+  if 'T' not in instarttime:
+    instarttime=instarttime+'T00:00:00'
+  if 'T' not in inendtime:
+    inendtime=inendtime+'T00:00:00'
   pattern = '%Y-%m-%dT%H:%M:%S'
   instart = int(time.mktime(time.strptime(instarttime, pattern)))
   inend = int(time.mktime(time.strptime(inendtime, pattern)))
