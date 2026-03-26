@@ -269,12 +269,12 @@ if __name__ == "__main__":
   """
   stotal
   https://github.com/fasrc/stotal
-  ---------------
+  -----------------
+
   stotal is will calculate the total CPU-hours, GPU-hours, and TRES-hours for a Slurm user or account.
 
   When passed a user or account (note that for information on other users (even in your own account) and accounts the user must be either an Operator or Administrator), this
-  command calculates the total usage for that user or account over the period specified. Time arguments for starttime and endtime are
-  the same as the sacct command.
+  command calculates the total usage for that user or account over the period specified. Time arguments for starttime and endtime are the same as the sacct command.
 
   -----------------
   """
