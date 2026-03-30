@@ -98,7 +98,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
         # Sum up the usage
         # Note that this caps the usage only in the window that is specified. The jobs may continue running before and after the window, but we care about the usage in the specific window.
         # This properly handles DST as it relies on elapsedraw and subtracting overage from that.
-        elapsedwindow = elapsedraw
+        elapsedwindow = int(elapsedraw)
 
         if start < instart:
           elapsedwindow = elapsedwindow - (instart - start)
