@@ -1,8 +1,8 @@
 # stotal
-stotal is will calculate the total CPU-hours, GPU-hours, and TRES-hours for a Slurm user or account.
+stotal is will calculate the total CPU-hours, Mem-hours, GPU-hours, and TRES-hours for a Slurm user or account.
 
 ## Usage
-stotal will calculate the CPU-hours, GPU-hours, and TRES-hours in a specified window for a user, account, or all the accounts on a cluster. Note that for information on other users (even in their own account) and accounts the user must be either an Operator or Administrator. stotal only calculates usage in the specified window, so if a job starts before or during the window and then runs into or beyond the window only the usage in the window will be tallied.
+stotal will calculate the CPU-hours, Mem-hours, GPU-hours, and TRES-hours in a specified window for a user, account, or all the accounts on a cluster. Note that for information on other users (even in their own account) and accounts the user must be either an Operator or Administrator. stotal only calculates usage in the specified window, so if a job starts before or during the window and then runs into or beyond the window only the usage in the window will be tallied.
 
 stotal has the following options:
 
