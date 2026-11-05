@@ -72,7 +72,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
     (user,account,partition,start,end,alloctres,elapsedraw) = job.strip().split('|')
     
     # Ignore jobs that have no allocation or no start time. That means they have never run.
-    if alloctres != "" or start != 'None':
+    if alloctres != "" and start != 'None':
       # Converting time to integer time.
       if end == "Unknown":
         end = inendtime
