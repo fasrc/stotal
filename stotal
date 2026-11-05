@@ -58,6 +58,7 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
   memtot = 0.
   gputot = 0
   trestot = 0.
+  pattern = '%Y-%m-%dT%H:%M:%S'
 
   al = {}
   ul = {}
@@ -71,12 +72,12 @@ def calc_usage(inuser, inaccount, instarttime, inendtime, header, details, csv, 
   for job in jobdata.stdout:
     (user,account,partition,start,end,alloctres,elapsedraw) = job.strip().split('|')
     
-    # Ignore jobs that have no allocation. That means they have never run.
-    if alloctres != "":
+    # Ignore jobs that have no allocation or no start time. That means they have never run.
+    if alloctres != "" or start != 'None':
       # Converting time to integer time.
       if end == "Unknown":
         end = inendtime
-      pattern = '%Y-%m-%dT%H:%M:%S'
+
       start = int(time.mktime(time.strptime(start, pattern)))
       end = int(time.mktime(time.strptime(end, pattern)))
       
